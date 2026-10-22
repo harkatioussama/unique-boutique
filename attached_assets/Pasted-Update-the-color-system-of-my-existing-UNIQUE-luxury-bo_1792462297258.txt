@@ -1,0 +1,45 @@
+Update the color system of my existing UNIQUE luxury boutique website BEFORE making any other changes.
+
+Do not rebuild the project or remove existing features. Keep the current layout, products, navigation, cart, and wishlist.
+
+## 1. NEW COLOR PALETTE
+
+- Primary brand color: Imperial Sapphire Blue, approximately #082567.
+- Deep sapphire for darker sections: #061A40.
+- Light sapphire accent: #4169A1.
+- Background: warm ivory #F7F4ED.
+- Main text: elegant near-black #191919.
+- Secondary text: muted grey #777777.
+- Borders: soft neutral beige #E5DED2.
+- Active/clicked button color: #8B0000.
+
+Replace the existing red accents throughout the website with imperial sapphire blue, including navigation accents, links, icons, decorative lines, section accents, and other red elements.
+
+## 2. BUTTON STATES
+
+Create consistent button styles across the entire website.
+
+- Default primary button: imperial sapphire blue background with white text.
+- Hover: a slightly brighter sapphire blue with a smooth transition.
+- Active/clicked state: background #8B0000 with white text.
+- Keyboard focus: visible, accessible focus outline.
+- Disabled state: muted background and no misleading interaction.
+- Secondary buttons: ivory background with sapphire text and a thin sapphire border; on hover, use a sapphire background with white text.
+
+The #8B0000 color must be used for the active/clicked state, not permanently applied to every button.
+
+For links, navigation, and icons, use sapphire blue as the primary accent. Preserve the premium luxury look.
+
+## 3. ANIMATION AND QUALITY
+
+- Use smooth transitions of approximately 200–300 ms.
+- Apply the new colors consistently to buttons, links, product cards, navigation, and forms.
+- Ensure sufficient contrast and keyboard accessibility.
+- Respect reduced-motion preferences.
+- Check responsive layouts on desktop and mobile.
+
+## 4. IMPORTANT
+
+First implement this color update only. Do not yet redesign the homepage, add brand collections, or change product data.
+
+Run the application, inspect the preview, and fix any visual inconsistencies. Keep all existing functionality working.

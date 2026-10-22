@@ -1,0 +1,354 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: delivery
+    description: Public delivery information
+  - name: admin-auth
+    description: Admin sign-in (no public registration)
+  - name: admin-wilayas
+    description: Wilaya delivery settings (admin only)
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /healthz/db:
+    get:
+      operationId: databaseHealthCheck
+      tags: [health]
+      summary: Database health check
+      description: Read-only check that the database is reachable
+      responses:
+        "200":
+          description: Database reachable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+        "503":
+          description: Database not configured or unreachable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /delivery/wilayas:
+    get:
+      operationId: listDeliveryWilayas
+      tags: [delivery]
+      summary: Wilayas currently open for delivery
+      description: Only wilayas with at least one delivery method switched on, with current fees in DZD.
+      responses:
+        "200":
+          description: Deliverable wilayas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DeliveryWilaya"
+  /admin/auth/login:
+    post:
+      operationId: adminLogin
+      tags: [admin-auth]
+      summary: Sign in as an admin
+      description: Requires the X-Requested-With header. Sets an HttpOnly session cookie.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminLoginRequest"
+      responses:
+        "200":
+          description: Signed in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+        "400":
+          $ref: "#/components/responses/Error"
+        "401":
+          $ref: "#/components/responses/Error"
+        "403":
+          $ref: "#/components/responses/Error"
+        "429":
+          $ref: "#/components/responses/Error"
+  /admin/auth/logout:
+    post:
+      operationId: adminLogout
+      tags: [admin-auth]
+      summary: Sign out and revoke the current session
+      responses:
+        "204":
+          description: Signed out
+        "401":
+          $ref: "#/components/responses/Error"
+        "403":
+          $ref: "#/components/responses/Error"
+  /admin/auth/me:
+    get:
+      operationId: getAdminMe
+      tags: [admin-auth]
+      summary: The signed-in admin
+      responses:
+        "200":
+          description: Current admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+        "401":
+          $ref: "#/components/responses/Error"
+  /admin/wilayas:
+    get:
+      operationId: listAdminWilayas
+      tags: [admin-wilayas]
+      summary: All wilayas with delivery settings (owner and staff)
+      responses:
+        "200":
+          description: All wilayas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminWilaya"
+        "401":
+          $ref: "#/components/responses/Error"
+  /admin/wilayas/{id}/delivery:
+    patch:
+      operationId: updateWilayaDelivery
+      tags: [admin-wilayas]
+      summary: Change a wilaya's delivery availability and fees (owner only)
+      parameters:
+        - $ref: "#/components/parameters/WilayaId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateWilayaDeliveryRequest"
+      responses:
+        "200":
+          description: Updated wilaya
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminWilaya"
+        "400":
+          $ref: "#/components/responses/Error"
+        "401":
+          $ref: "#/components/responses/Error"
+        "403":
+          $ref: "#/components/responses/Error"
+        "404":
+          $ref: "#/components/responses/Error"
+  /admin/wilayas/{id}/verification:
+    patch:
+      operationId: updateWilayaVerification
+      tags: [admin-wilayas]
+      summary: Record an official-source check for a wilaya (owner only)
+      parameters:
+        - $ref: "#/components/parameters/WilayaId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateWilayaVerificationRequest"
+      responses:
+        "200":
+          description: Updated wilaya
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminWilaya"
+        "400":
+          $ref: "#/components/responses/Error"
+        "401":
+          $ref: "#/components/responses/Error"
+        "403":
+          $ref: "#/components/responses/Error"
+        "404":
+          $ref: "#/components/responses/Error"
+components:
+  parameters:
+    WilayaId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    Error:
+      description: Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+    DeliveryMethod:
+      type: object
+      properties:
+        available:
+          type: boolean
+        feeDzd:
+          type: ["integer", "null"]
+      required: [available, feeDzd]
+    DeliveryWilaya:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: ["integer", "null"]
+        nameFr:
+          type: string
+        nameAr:
+          type: string
+        home:
+          $ref: "#/components/schemas/DeliveryMethod"
+        desk:
+          $ref: "#/components/schemas/DeliveryMethod"
+        minDays:
+          type: ["integer", "null"]
+        maxDays:
+          type: ["integer", "null"]
+      required: [id, code, nameFr, nameAr, home, desk, minDays, maxDays]
+    AdminLoginRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          minLength: 1
+          maxLength: 256
+      required: [email, password]
+    AdminUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        displayName:
+          type: string
+        role:
+          type: string
+          enum: [owner, staff]
+      required: [id, email, displayName, role]
+    AdminWilaya:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: ["integer", "null"]
+        nameFr:
+          type: string
+        nameAr:
+          type: string
+        parentWilayaId:
+          type: ["integer", "null"]
+        effectiveFrom:
+          type: ["string", "null"]
+        verification:
+          type: string
+          enum: [established, press_reported, verified]
+        sourceReference:
+          type: string
+        verifiedAt:
+          type: ["string", "null"]
+        isActive:
+          type: boolean
+        home:
+          $ref: "#/components/schemas/DeliveryMethod"
+        desk:
+          $ref: "#/components/schemas/DeliveryMethod"
+        minDays:
+          type: ["integer", "null"]
+        maxDays:
+          type: ["integer", "null"]
+        note:
+          type: ["string", "null"]
+        rateUpdatedAt:
+          type: string
+      required: [id, code, nameFr, nameAr, parentWilayaId, effectiveFrom, verification, sourceReference, verifiedAt, isActive, home, desk, minDays, maxDays, note, rateUpdatedAt]
+    UpdateWilayaDeliveryRequest:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        homeAvailable:
+          type: boolean
+        homeFeeDzd:
+          type: ["integer", "null"]
+          minimum: 0
+          maximum: 1000000
+        deskAvailable:
+          type: boolean
+        deskFeeDzd:
+          type: ["integer", "null"]
+          minimum: 0
+          maximum: 1000000
+        minDays:
+          type: ["integer", "null"]
+          minimum: 0
+          maximum: 60
+        maxDays:
+          type: ["integer", "null"]
+          minimum: 0
+          maximum: 60
+        note:
+          type: ["string", "null"]
+          maxLength: 500
+    UpdateWilayaVerificationRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        verification:
+          type: string
+          enum: [verified, press_reported]
+        sourceReference:
+          type: string
+          minLength: 10
+          maxLength: 500
+      required: [verification, sourceReference]

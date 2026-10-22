@@ -1,0 +1,68 @@
+You are a senior full-stack developer and luxury e-commerce designer. Build my complete online jewelry boutique called UNIQUE.
+
+IMPORTANT: I have no coding experience. You must generate the code, configure the project, run it, test it, and fix errors yourself. Give me simple instructions only when you need me to take an action.
+
+## 1. TECHNOLOGY
+- Frontend: React with Vite.
+- Backend: Node.js with Express.
+- Language: JavaScript.
+- Architecture: clean, organized, maintainable, and ready to expand.
+- Build a real working website, not just a static mockup.
+
+## 2. BRAND AND DESIGN
+Brand name: UNIQUE.
+Industry: luxury jewelry.
+Visual direction: quiet luxury, elegant editorial design, premium craftsmanship, sophistication, and exclusivity.
+Use an ivory and warm-white background, sophisticated black typography, subtle champagne-gold accents, beautiful jewelry photography, generous whitespace, refined transitions, and smooth animations.
+Avoid excessive gold, clutter, cheap-looking gradients, generic templates, and cartoonish graphics.
+The website must look exceptional on mobile, tablet, and desktop.
+
+## 3. CUSTOMER STOREFRONT
+Create:
+- Homepage with an elegant hero section, premium jewelry photography, featured collections, bestsellers, and brand storytelling.
+- Shop page with categories, search, sorting, and filters.
+- Product detail pages with image galleries, prices in Algerian dinars (DZD), descriptions, available variants, and stock status.
+- Collections pages.
+- Shopping cart with quantity updates and subtotal.
+- Wishlist.
+- About UNIQUE page.
+- Jewelry care guide.
+- FAQ and contact pages.
+- Shipping and returns, privacy policy, and terms pages.
+- Clear navigation, footer, loading states, empty states, and useful error messages.
+
+## 4. REAL E-COMMERCE FUNCTIONALITY
+Prepare a genuine backend using Node.js and Express.
+Use PostgreSQL for persistent data, with a clear integration plan for Supabase if credentials are not yet available.
+Products must support multiple images, categories, variants, prices, and inventory.
+Orders must store customer details, delivery address, order items, totals, and order status.
+Start with cash on delivery suitable for Algeria. Do not add fake online payment functionality.
+Persist cart and wishlist appropriately.
+Never trust prices submitted by the browser; calculate order totals on the server.
+
+## 5. ADMIN DASHBOARD
+Create a protected admin area where an authorized administrator can:
+- Add, edit, and archive products.
+- Upload and manage product images.
+- Manage categories and collections.
+- Update prices and stock.
+- View and manage customer orders.
+- Change order status.
+- See a basic sales summary.
+
+Do not allow public visitors to register as administrators. Enforce authorization on the server and protect private customer data.
+
+## 6. SECURITY AND QUALITY
+Validate inputs on the server, handle errors safely, protect sensitive configuration with environment variables, and never expose database passwords or privileged API keys in frontend code.
+Use accessible controls, semantic HTML, appropriate SEO metadata, and optimized images.
+Do not invent successful tests. Run the application, inspect errors, and fix what you can.
+
+## 7. EXECUTION PLAN
+Work in phases:
+Phase 1: Create the complete, visually polished storefront with sample jewelry products.
+Phase 2: Build the Express API and connect persistent database storage.
+Phase 3: Implement secure authentication and the admin dashboard.
+Phase 4: Implement image uploads, inventory, cart, and cash-on-delivery orders.
+Phase 5: Test the full customer and admin journeys and prepare deployment.
+
+Start with Phase 1 now. Create the project files, install dependencies, launch the website, and show me the working preview. Do not stop at a written plan. If you need a decision from me, ask one simple question at a time. Clearly identify anything that still requires configuration or credentials.
