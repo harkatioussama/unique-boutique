@@ -154,3 +154,6 @@ overrides:
 
 allowBuilds:
   esbuild: true
+  # Firebase generates optional runtime defaults; protobufjs checks API version compatibility.
+  '@firebase/util': true
+  protobufjs: true
